@@ -13,17 +13,14 @@ def stitch():
 
     try:
         env = os.environ.copy()
-        env["STITCHR_DATA"] = os.path.join(os.path.dirname(__file__), "Data")
-
-        command = f'export STITCHR_DATA="{os.path.join(os.path.dirname(__file__), "Data")}" && stitchr -v "{v}" -j "{j}" -cdr3 "{cdr3}"'
+        env["STITCHR_DATA"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "Data"))
 
         result = subprocess.run(
-            command,
+            ["stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            shell=True,  # important!
-            executable="/bin/bash",
+            env=env,
             cwd=os.path.dirname(__file__)
         )
 
