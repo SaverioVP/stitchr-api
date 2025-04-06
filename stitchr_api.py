@@ -14,7 +14,7 @@ def stitch():
 
     try:
         result = subprocess.run(
-            ["stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
+            ["python", "-m", "Stitchr.stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
