@@ -1,3 +1,5 @@
+import os
+os.environ["STITCHR_DATA"] = "Data"
 from flask import Flask, request, jsonify
 import subprocess
 
