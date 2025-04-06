@@ -1,5 +1,6 @@
+import os
 from flask import Flask, request, jsonify
-from Stitchr.stitchr import stitch_from_parts
+import subprocess
 
 app = Flask(__name__)
 
@@ -11,8 +12,19 @@ def stitch():
     cdr3 = data.get("cdr3")
 
     try:
-        result = stitch_from_parts(v, j, cdr3)
-        return jsonify({"sequence": result})
+        result = subprocess.run(
+            ["stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            cwd=os.path.dirname(__file__),  # run from repo root
+            env={**os.environ, "STITCHR_DATA": "Data"}  # fallback if Render doesn't inject
+        )
+
+        if result.returncode != 0:
+            return jsonify({"error": result.stderr}), 400
+
+        return jsonify({"sequence": result.stdout.strip()})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
