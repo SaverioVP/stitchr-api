@@ -1,6 +1,5 @@
-import os
 from flask import Flask, request, jsonify
-import subprocess
+from Stitchr.stitchr import stitch_from_parts
 
 app = Flask(__name__)
 
@@ -12,22 +11,8 @@ def stitch():
     cdr3 = data.get("cdr3")
 
     try:
-        env = os.environ.copy()
-        env["STITCHR_DATA"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "Data"))
-
-        result = subprocess.run(
-            ["stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            env=env,
-            cwd=os.path.dirname(__file__)
-        )
-
-        if result.returncode != 0:
-            return jsonify({"error": result.stderr}), 400
-
-        return jsonify({"sequence": result.stdout.strip()})
+        result = stitch_from_parts(v, j, cdr3)
+        return jsonify({"sequence": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
