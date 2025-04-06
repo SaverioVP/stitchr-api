@@ -1,5 +1,4 @@
 import os
-os.environ["STITCHR_DATA"] = "Data"
 from flask import Flask, request, jsonify
 import subprocess
 
@@ -13,12 +12,15 @@ def stitch():
     cdr3 = data.get("cdr3")
 
     try:
+        env = os.environ.copy()
+        env["STITCHR_DATA"] = os.path.join(os.path.dirname(__file__), "Data")
+
         result = subprocess.run(
             ["stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            env=os.environ,
+            env=env,
             cwd=os.path.dirname(__file__)
         )
 
