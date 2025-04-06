@@ -18,7 +18,8 @@ def stitch():
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            env=os.environ
+            env=os.environ,
+            cwd=os.path.dirname(__file__)
         )
 
         if result.returncode != 0:
