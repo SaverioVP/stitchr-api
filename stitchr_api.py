@@ -17,7 +17,8 @@ def stitch():
             ["stitchr", "-v", v, "-j", j, "-cdr3", cdr3],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True
+            text=True,
+            env=os.environ
         )
 
         if result.returncode != 0:
