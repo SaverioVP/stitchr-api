@@ -4,8 +4,7 @@ from Stitchr import stitchrfunctions as fxn
 
 app = Flask(__name__)
 
-# === INIT ===
-# You only need to run this once when the app starts
+# specify details about the locus to be stitched according to https://jamieheather.github.io/stitchr/importing.html
 CHAIN = "TRB"
 SPECIES = "HUMAN"
 
