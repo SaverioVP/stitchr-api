@@ -19,13 +19,14 @@ def stitch_endpoint():
     v = data.get("v")
     j = data.get("j")
     cdr3 = data.get("cdr3")
+    l = data.get("l", v)  # use provided l, otherwise default to V gene
 
     try:
         tcr_bits = {
             "v": v,
             "j": j,
             "cdr3": cdr3,
-            "l": v,
+            "l": l,  # allow leader override
             "c": "TRBC1*01",
             "mode": "",
             "skip_c_checks": False,
@@ -53,6 +54,7 @@ def stitch_endpoint():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run()
